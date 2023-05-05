@@ -1,88 +1,90 @@
 class Node {
   constructor(value) {
-      this.value = value;
-      this.left = null;
-      this.right = null;
+    this.value = value;
+    this.left = null;
+    this.right = null;
   }
 }
 
 class BST {
   constructor() {
-      this.root = null;
+    this.root = null;
   }
 
   insert(value) {
-      const newNode = new Node(value);
-      if (this.root === null) {
-          this.root = newNode;
+    const newNode = new Node(value);
+    if (this.root === null) {
+      this.root = newNode;
+      return this;
+    }
+    let temp = this.root;
+    while (true) {
+      if (newNode.value === temp.value) return undefined;
+      if (newNode.value < temp.value) {
+        if (temp.left === null) {
+          temp.left = newNode;
           return this;
+        }
+        temp = temp.left;
+      } else {
+        if (temp.right === null) {
+          temp.right = newNode;
+          return this;
+        }
+        temp = temp.right;
       }
-      let temp = this.root;
-      while (true) {
-          if (newNode.value === temp.value) return undefined;
-          if (newNode.value < temp.value) {
-              if (temp.left === null) {
-                  temp.left = newNode;
-                  return this;
-              }
-              temp = temp.left;
-          } else {
-              if (temp.right === null) {
-                  temp.right = newNode;
-                  return this;
-              } 
-              temp = temp.right;
-          }
-      }
+    }
   }
 
   contains(value) {
-      if (this.root === null) return false;
-      let temp = this.root;
-      while (temp) {
-          if (value < temp.value) {
-              temp = temp.left;
-          } else if (value > temp.value) {
-              temp = temp.right;
-          } else {
-              return true;
-          }
+    if (this.root === null) return false;
+    let temp = this.root;
+    while (temp) {
+      if (value < temp.value) {
+        temp = temp.left;
+      } else if (value > temp.value) {
+        temp = temp.right;
+      } else {
+        return true;
       }
-      return false;
-  }      
-  
+    }
+    return false;
+  }
+
   minValueNode(currentNode) {
-      while (currentNode.left !== null) {
-          currentNode = currentNode.left;
-      }
-      return currentNode;
+    while (currentNode.left !== null) {
+      currentNode = currentNode.left;
+    }
+    return currentNode;
   }
 
   BFS() {
-      let currentNode = this.root;
-      let results = [];
-      let queue = [];
-      queue.push(currentNode);
+    let currentNode = this.root;
+    let results = [];
+    let queue = [];
+    queue.push(currentNode);
 
-      while (queue.length) {
-         currentNode = queue.shift();
-         results.push(currentNode.value);
-         if(currentNode.left) queue.push(currentNode.left);
-         if(currentNode.right) queue.push(currentNode.right);
-      }
-      return results;
+    while (queue.length) {
+      currentNode = queue.shift();
+      results.push(currentNode.value);
+      if (currentNode.left) queue.push(currentNode.left);
+      if (currentNode.right) queue.push(currentNode.right);
+    }
+    return results;
   }
 
-// WRITE DFS_PREORDER METHOD HERE //
-//                                //
-//                                //
-//                                //
-//                                //
-////////////////////////////////////
-  
+  // WRITE DFS_PREORDER METHOD HERE //
+  DFSPreOrder() {
+    let results = [];
+    function traverse(currentNode) {
+      results.push(currentNode.value);
+      if (currentNode.left) traverse(currentNode.left);
+      if (currentNode.right) traverse(currentNode.right);
+    }
+    traverse(this.root);
+    return results;
+  }
 }
-
-
 
 function test() {
   let myTree = new BST();
@@ -95,17 +97,14 @@ function test() {
   myTree.insert(52);
   myTree.insert(82);
 
-  console.log( myTree.DFSPreOrder() );
+  console.log(myTree.DFSPreOrder());
 }
 
-
 test();
-
 
 /*
   EXPECTED OUTPUT:
   ----------------
   [ 47, 21, 18, 27, 76, 52, 82 ]
 
-*/   
-
+*/
